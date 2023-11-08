@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+</head>
+
+<body>
+  <script>
+    fetch("https://localhost:7058/balance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).then(response => response.json())
+      .then(json => console.log(json))
+      .catch(err => console.log('Erro de solicitação', err));
+
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:7058/useBalanceHub")
+      .build();
+
+    connection.start();
+
+    connection.on("UseBalance", (data) => {
+      console.log(data);
+    });
+  </script>
+</body>
+
+</html>
